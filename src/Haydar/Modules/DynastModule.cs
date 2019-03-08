@@ -23,5 +23,9 @@ namespace Haydar.Modules
             return ReplyAsync("toplist command executed.");
         }
 
+        //TODO: Add Help command
+        //TODO: Add Invite command
+        //TODO: Add Contributors command
+
     }
 }

@@ -78,5 +78,9 @@ namespace Haydar.Api
 
             return deadServers.OrderBy(x => x.ClientCount).Take(10).ToList();
         }
+
+        //TODO: Add Item command
+        //TODO: Add ItemList command
+        //TODO: Add Server command
     }
 }
