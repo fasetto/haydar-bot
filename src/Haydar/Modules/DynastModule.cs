@@ -1,15 +1,19 @@
 using System.Threading.Tasks;
 using Discord.Commands;
 using Haydar.Api;
+using Haydar.Models;
 
 namespace Haydar.Modules
 {
     public class DynastModule : ModuleBase<SocketCommandContext>
     {
         private readonly DynastApi _api;
-        public DynastModule(DynastApi api)
+        private readonly Config _config;
+
+        public DynastModule(DynastApi api, Config config)
         {
             _api = api;
+            _config = config;
         }
 
         [Command("toplist"), Summary("Prints top10 players based on their score")]
