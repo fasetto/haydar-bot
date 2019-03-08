@@ -17,9 +17,6 @@ namespace Haydar.Models
         [JsonProperty("client_count")]
         public long ClientCount { get; set; }
 
-        [JsonProperty("map")]
-        public string Map { get; set; }
-
         [JsonProperty("top_player_name")]
         public string TopPlayerName { get; set; }
 
