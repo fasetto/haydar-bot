@@ -65,5 +65,18 @@ namespace Haydar.Api
 
             return players.Take(3).ToList();
         }
+
+        public async Task<List<ServerInfo>> DeadAsync(string region = null)
+        {
+            List<ServerInfo> deadServers;
+
+            if (region != null)
+                deadServers = await FetchServerInformationsAsync(x => x.Region.ToLower().StartsWith(region.ToLower()));
+
+            else
+                deadServers = await FetchServerInformationsAsync();
+
+            return deadServers.OrderBy(x => x.ClientCount).Take(10).ToList();
+        }
     }
 }
