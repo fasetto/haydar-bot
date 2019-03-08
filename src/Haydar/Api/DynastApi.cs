@@ -30,7 +30,7 @@ namespace Haydar.Api
             else
                 toplist = await FetchServerInformationsAsync();
 
-            return toplist.Take(10).ToList();
+            return toplist.OrderByDescending(player => player.TopPlayerScore).Take(10).ToList();
         }
 
         private Task<List<ServerInfo>> FetchServerInformationsAsync(Func<ServerInfo, bool> predicate = null)
@@ -48,9 +48,7 @@ namespace Haydar.Api
             if (predicate != null)
                 serverInformations = serverInformations.Where(predicate).ToList();
 
-            serverInformations = serverInformations
-                .OrderByDescending(player => player.TopPlayerScore)
-                .ToList();
+            serverInformations = serverInformations.ToList();
 
             return Task.FromResult(serverInformations);
         }
