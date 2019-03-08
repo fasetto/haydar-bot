@@ -43,7 +43,7 @@ namespace Haydar.Api
                 data = client.DownloadString(_config.ApiUrl);
             }
 
-            var serverInformations = JsonConvert.DeserializeObject<ServerObj>(data).ServerInformations;
+            var serverInformations = DeserializeServerInformations(data);
 
             if (predicate != null)
                 serverInformations = serverInformations.Where(predicate).ToList();
@@ -53,6 +53,12 @@ namespace Haydar.Api
                 .ToList();
 
             return Task.FromResult(serverInformations);
+        }
+
+        internal virtual List<ServerInfo> DeserializeServerInformations(string data)
+        {
+            var serverInformations = JsonConvert.DeserializeObject<ServerObj>(data).ServerInformations;
+            return serverInformations;
         }
 
         public async Task<List<ServerInfo>> FindAsync(string player)
