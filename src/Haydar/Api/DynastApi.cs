@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Haydar.Models;
 using Newtonsoft.Json;
+using Haydar.Models;
+
+[assembly: InternalsVisibleTo("Haydar.Tests"), InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace Haydar.Api
 {
@@ -32,15 +35,15 @@ namespace Haydar.Api
 
         private Task<List<ServerInfo>> FetchServerInformationsAsync(Func<ServerInfo, bool> predicate = null)
         {
-            string result;
+            string data;
 
             using (var client = new WebClient())
             {
                 client.Headers.Add("User-Agent", "Haydar");
-                result = client.DownloadString(_config.ApiUrl);
+                data = client.DownloadString(_config.ApiUrl);
             }
 
-            var serverInformations = JsonConvert.DeserializeObject<ServerObj>(result).ServerInformations;
+            var serverInformations = JsonConvert.DeserializeObject<ServerObj>(data).ServerInformations;
 
             if (predicate != null)
                 serverInformations = serverInformations.Where(predicate).ToList();
@@ -50,6 +53,13 @@ namespace Haydar.Api
                 .ToList();
 
             return Task.FromResult(serverInformations);
+        }
+
+        public async Task<List<ServerInfo>> FindAsync(string player)
+        {
+            var players = await FetchServerInformationsAsync(x => x.TopPlayerName.ToLower().Contains(player.ToLower()));
+
+            return players.Take(3).ToList();
         }
     }
 }
