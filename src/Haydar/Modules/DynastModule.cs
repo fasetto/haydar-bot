@@ -36,6 +36,24 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
+        [Command("server"), Summary("Prints informations about selected server")]
+        public async Task FindServers(string label, string identifider = null)
+        {
+            string result;
+
+            if (identifider == null)
+            {
+                var servers = await _api.FindAllServersAsync(label);
+                result = Tabularize(servers);
+                await ReplyAsync(result);
+                return;
+            }
+
+            var server = await _api.FindServerAsync(label, identifider);
+            result = Tabularize(new List<ServerInfo>() { server });
+            await ReplyAsync(result);
+        }
+
         private string Tabularize(List<ServerInfo> serverList)
         {
             var scoreTable = new DataTable();
