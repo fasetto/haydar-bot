@@ -89,5 +89,17 @@ namespace Haydar.Tests
             Assert.True(first.ClientCount < last.ClientCount);
             Assert.Equal(10, deadServers.Where(x => x.Region.ToLower().StartsWith(region)).Count());
         }
+
+        [Theory]
+        [InlineData("amsterdam-03x", "ams 3x")]
+        [InlineData("amsterdam-03", "ams 03")]
+        [InlineData("amsterdam-07x", "ams 7x")]
+        [InlineData("amsterdam-01x", "ams 1x")]
+        [InlineData("amsterdam-01", "ams 1")]
+        public async void ServerAsync_CanFindServer(string expected, string label)
+        {
+            var server = await api.ServerAsync(label);
+            Assert.Equal(expected, server.Label);
+        }
     }
 }
