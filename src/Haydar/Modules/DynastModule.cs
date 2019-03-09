@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using ConsoleTableExt;
@@ -35,7 +36,7 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
-        private string Tabularize(System.Collections.Generic.List<ServerInfo> serverList)
+        private string Tabularize(List<ServerInfo> serverList)
         {
             var scoreTable = new DataTable();
             scoreTable.Columns.Add("# SERVER", typeof(string));
@@ -48,7 +49,6 @@ namespace Haydar.Modules
                 scoreTable.Rows.Add(server.Label, server.TopPlayerScore, server.TopPlayerLevel, server.TopPlayerName, server.ClientCount);
 
             var result = "```md\n";
-
             result += ConsoleTableBuilder.From(scoreTable)
                 .WithFormat(ConsoleTableBuilderFormat.Minimal)
                 .Export()
