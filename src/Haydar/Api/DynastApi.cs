@@ -66,7 +66,7 @@ namespace Haydar.Api
             return players.Take(3).ToList();
         }
 
-        public async Task<List<ServerInfo>> DeadAsync(string region = null)
+        public async Task<List<ServerInfo>> DeadServersAsync(string region = null)
         {
             List<ServerInfo> deadServers;
 

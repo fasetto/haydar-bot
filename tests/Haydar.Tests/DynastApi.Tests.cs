@@ -69,7 +69,7 @@ namespace Haydar.Tests
         [Fact]
         public async void DeadAsync_ReturnsRightInformations()
         {
-            var deadServers = await api.DeadAsync();
+            var deadServers = await api.DeadServersAsync();
             var first = deadServers.FirstOrDefault();
             var last = deadServers.LastOrDefault();
 
@@ -81,7 +81,7 @@ namespace Haydar.Tests
         public async void DeadAsync_WithRegion_ReturnsRightInformations()
         {
             var region = "eu";
-            var deadServers = await api.DeadAsync(region);
+            var deadServers = await api.DeadServersAsync(region);
             var first = deadServers.FirstOrDefault();
             var last = deadServers.LastOrDefault();
 
