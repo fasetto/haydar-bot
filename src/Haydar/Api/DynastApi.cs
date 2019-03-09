@@ -79,18 +79,18 @@ namespace Haydar.Api
             return deadServers.OrderBy(x => x.ClientCount).Take(10).ToList();
         }
 
-        public async Task<ServerInfo> ServerAsync(string label)
+        public async Task<ServerInfo> FindServerAsync(string label, string identifier)
         {
-            if (label.Split(' ').Length < 2)
-                return null;
-
-            string name = label.Split(' ')[0];
-            string identifier = label.Split(' ')[1];
-
             identifier = identifier[0] == '0' ? identifier : identifier.Insert(0, "0");
 
-            var servers = await FetchServerInformationsAsync(x => x.Label.Split('-')[0].ToLower().Contains(name.ToLower()) && x.Label.Split('-')[1] == identifier.ToLower());
+            var servers = await FetchServerInformationsAsync(x => x.Label.Split('-')[0].ToLower().Contains(label.ToLower()) && x.Label.Split('-')[1] == identifier.ToLower());
             return servers.FirstOrDefault();
+        }
+
+        public async Task<List<ServerInfo>> FindAllServersAsync(string label)
+        {
+            var servers = await FetchServerInformationsAsync(x => x.Label.Split('-')[0].ToLower().Contains(label.ToLower()));
+            return servers;
         }
 
         //TODO: Add Item command

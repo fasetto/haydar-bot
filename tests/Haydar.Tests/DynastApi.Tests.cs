@@ -91,14 +91,14 @@ namespace Haydar.Tests
         }
 
         [Theory]
-        [InlineData("amsterdam-03x", "ams 3x")]
-        [InlineData("amsterdam-03", "ams 03")]
-        [InlineData("amsterdam-07x", "ams 7x")]
-        [InlineData("amsterdam-01x", "ams 1x")]
-        [InlineData("amsterdam-01", "ams 1")]
-        public async void ServerAsync_CanFindServer(string expected, string label)
+        [InlineData("amsterdam-03x", "ams", "3x")]
+        [InlineData("amsterdam-03", "ams", "03")]
+        [InlineData("amsterdam-07x", "ams", "7x")]
+        [InlineData("amsterdam-01x", "ams", "1x")]
+        [InlineData("amsterdam-01", "ams", "1")]
+        public async void ServerAsync_CanFindServer(string expected, string label, string identifer)
         {
-            var server = await api.ServerAsync(label);
+            var server = await api.FindServerAsync(label, identifer);
             Assert.Equal(expected, server.Label);
         }
     }
