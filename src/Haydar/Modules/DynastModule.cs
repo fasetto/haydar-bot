@@ -22,7 +22,12 @@ namespace Haydar.Modules
         public async Task TopList(string region = null)
         {
             var toplist = await _api.FetchToplistAsync(region);
+            var result = Tabularize(toplist);
+            await ReplyAsync(result);
+        }
 
+        private string Tabularize(System.Collections.Generic.List<ServerInfo> serverList)
+        {
             var scoreTable = new DataTable();
             scoreTable.Columns.Add("# SERVER", typeof(string));
             scoreTable.Columns.Add("SCORE", typeof(string));
@@ -30,7 +35,7 @@ namespace Haydar.Modules
             scoreTable.Columns.Add("NICKNAME", typeof(string));
             scoreTable.Columns.Add("PLAYER COUNT", typeof(string));
 
-            foreach (var server in toplist)
+            foreach (var server in serverList)
                 scoreTable.Rows.Add(server.Label, server.TopPlayerScore, server.TopPlayerLevel, server.TopPlayerName, server.ClientCount);
 
             var result = "```md\n";
@@ -41,8 +46,7 @@ namespace Haydar.Modules
                 .ToString();
 
             result += "```";
-
-            await ReplyAsync(result);
+            return result;
         }
 
         //TODO: Add Help command
