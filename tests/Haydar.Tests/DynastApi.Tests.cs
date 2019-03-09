@@ -58,7 +58,7 @@ namespace Haydar.Tests
         }
 
         [Fact]
-        public async void FindAsync_SearchString_CanFindPlayers()
+        public async void FindPlayersAsync_SearchString_CanFindPlayers()
         {
             var player = "serkan";
             var result = await api.FindPlayersAsync(player);
@@ -67,7 +67,7 @@ namespace Haydar.Tests
         }
 
         [Fact]
-        public async void DeadAsync_ReturnsRightInformations()
+        public async void DeadServersAsync_ReturnsRightInformations()
         {
             var deadServers = await api.DeadServersAsync();
             var first = deadServers.FirstOrDefault();
@@ -78,7 +78,7 @@ namespace Haydar.Tests
         }
 
         [Fact]
-        public async void DeadAsync_WithRegion_ReturnsRightInformations()
+        public async void DeadServersAsync_WithRegion_ReturnsRightInformations()
         {
             var region = "eu";
             var deadServers = await api.DeadServersAsync(region);
@@ -96,7 +96,7 @@ namespace Haydar.Tests
         [InlineData("amsterdam-07x", "ams", "7x")]
         [InlineData("amsterdam-01x", "ams", "1x")]
         [InlineData("amsterdam-01", "ams", "1")]
-        public async void ServerAsync_CanFindServer(string expected, string label, string identifer)
+        public async void FindServerAsync_CanFindServer(string expected, string label, string identifer)
         {
             var server = await api.FindServerAsync(label, identifer);
             Assert.Equal(expected, server.Label);
