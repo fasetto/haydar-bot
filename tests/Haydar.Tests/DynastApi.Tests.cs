@@ -101,5 +101,16 @@ namespace Haydar.Tests
             var server = await api.FindServerAsync(label, identifer);
             Assert.Equal(expected, server.Label);
         }
+
+        [Theory]
+        [InlineData("amsterdam", "ams")]
+        [InlineData("frankfurt", "fra")]
+        [InlineData("sydney", "syd")]
+        [InlineData("russia", "ru")]
+        public async void FindAllServersAsync_CandFindAllServers(string expected, string label)
+        {
+            var servers = await api.FindAllServersAsync(label);
+            servers.ForEach(x => Assert.Equal(expected, x.Label.Split('-')[0]));
+        }
     }
 }
