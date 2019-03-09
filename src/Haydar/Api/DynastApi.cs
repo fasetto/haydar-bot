@@ -59,7 +59,7 @@ namespace Haydar.Api
             return serverInformations;
         }
 
-        public async Task<List<ServerInfo>> FindAsync(string player)
+        public async Task<List<ServerInfo>> FindPlayersAsync(string player)
         {
             var players = await FetchServerInformationsAsync(x => x.TopPlayerName.ToLower().Contains(player.ToLower()));
 

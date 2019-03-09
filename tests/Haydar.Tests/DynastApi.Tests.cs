@@ -61,7 +61,7 @@ namespace Haydar.Tests
         public async void FindAsync_SearchString_CanFindPlayers()
         {
             var player = "serkan";
-            var result = await api.FindAsync(player);
+            var result = await api.FindPlayersAsync(player);
 
             Assert.Equal(1, result.Count);
         }
