@@ -1,4 +1,6 @@
+using System.Data;
 using System.Threading.Tasks;
+using ConsoleTableExt;
 using Discord.Commands;
 using Haydar.Api;
 using Haydar.Models;
@@ -17,10 +19,30 @@ namespace Haydar.Modules
         }
 
         [Command("toplist"), Summary("Prints top10 players based on their score")]
-        public Task TopList(string region)
+        public async Task TopList(string region = null)
         {
-            //TODO: Fetch the toplist from api and send it.
-            return ReplyAsync("toplist command executed.");
+            var toplist = await _api.FetchToplistAsync(region);
+
+            var scoreTable = new DataTable();
+            scoreTable.Columns.Add("# SERVER", typeof(string));
+            scoreTable.Columns.Add("SCORE", typeof(string));
+            scoreTable.Columns.Add("LEVEL", typeof(string));
+            scoreTable.Columns.Add("NICKNAME", typeof(string));
+            scoreTable.Columns.Add("PLAYER COUNT", typeof(string));
+
+            foreach (var server in toplist)
+                scoreTable.Rows.Add(server.Label, server.TopPlayerScore, server.TopPlayerLevel, server.TopPlayerName, server.ClientCount);
+
+            var result = "```md\n";
+
+            result += ConsoleTableBuilder.From(scoreTable)
+                .WithFormat(ConsoleTableBuilderFormat.Minimal)
+                .Export()
+                .ToString();
+
+            result += "```";
+
+            await ReplyAsync(result);
         }
 
         //TODO: Add Help command
