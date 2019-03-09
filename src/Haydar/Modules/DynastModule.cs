@@ -54,6 +54,14 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
+        [Command("dead"), Summary("Prints servers with less player count")]
+        public async Task DeadServers(string region = null)
+        {
+            var servers = await _api.DeadServersAsync(region);
+            var result = Tabularize(servers);
+            await ReplyAsync(result);
+        }
+
         private string Tabularize(List<ServerInfo> serverList)
         {
             var scoreTable = new DataTable();
