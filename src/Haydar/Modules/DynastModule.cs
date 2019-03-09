@@ -26,6 +26,15 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
+
+        [Command("find"), Summary("To find a specific player in toplist")]
+        public async Task FindPlayers(string player)
+        {
+            var players = await _api.FindPlayersAsync(player);
+            var result = Tabularize(players);
+            await ReplyAsync(result);
+        }
+
         private string Tabularize(System.Collections.Generic.List<ServerInfo> serverList)
         {
             var scoreTable = new DataTable();
