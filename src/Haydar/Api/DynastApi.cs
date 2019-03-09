@@ -90,7 +90,7 @@ namespace Haydar.Api
         public async Task<List<ServerInfo>> FindAllServersAsync(string label)
         {
             var servers = await FetchServerInformationsAsync(x => x.Label.Split('-')[0].ToLower().Contains(label.ToLower()));
-            return servers;
+            return servers.OrderByDescending(x => x.TopPlayerScore).Take(10).ToList();
         }
 
         //TODO: Add Item command
