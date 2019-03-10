@@ -93,12 +93,12 @@ namespace Haydar.Modules
 
                 embed.AddField("__**Damage**__", $@"
                     **multiplier** `{item.Damage}`
-                    **dps** `{item.Dps}`
-                    **level10** `{damageAt10}`
-                    **level20** `{damageAt20}`
-                    **level30** `{damageAt30}`
-                    **level40** `{damageAt40}`
-                    **level50** `{damageAt50}`
+                    **dps** `{item.Dps?.ToString("0.00")}`
+                    **level10** `{damageAt10.ToString("0.00")}`
+                    **level20** `{damageAt20.ToString("0.00")}`
+                    **level30** `{damageAt30.ToString("0.00")}`
+                    **level40** `{damageAt40.ToString("0.00")}`
+                    **level50** `{damageAt50.ToString("0.00")}`
                 ", true);
 
                 embed.AddField("__**Other Informations**__", $@"
@@ -109,7 +109,6 @@ namespace Haydar.Modules
             }
 
             embed.WithFooter(footer => footer.Text = "If you didn\'t find the item you are looking for, just use the itemlist command to see the all items in the game..");
-
             await ReplyAsync(embed: embed.Build());
         }
 
