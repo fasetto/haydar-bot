@@ -76,7 +76,7 @@ namespace Haydar.Modules
             var builder = new EmbedBuilder()
             {
                 Color = new Color(0xFD3439),
-                Description = $"Here are some commands like **{command}**"
+                Description = $":closed_book: Here are some commands like **{command}**"
             };
 
             foreach (var match in result.Commands)
