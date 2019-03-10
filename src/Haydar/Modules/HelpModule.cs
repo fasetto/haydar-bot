@@ -19,7 +19,6 @@ namespace Haydar.Modules
             _config = config;
         }
 
-
         public async Task Help()
         {
             var prefix = _config.BotConfig.Prefix;
