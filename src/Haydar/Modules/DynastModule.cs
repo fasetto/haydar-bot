@@ -75,21 +75,21 @@ namespace Haydar.Modules
 
             var embed = new EmbedBuilder()
             {
-                Title = $":bulb: {item.Name}",
-                Description = item.Description,
-                Color = new Color(0xDDB979),
+                Title        = $":bulb: {item.Name}",
+                Description  = item.Description,
+                Color        = new Color(0xDDB979),
                 ThumbnailUrl = item.Image,
-                Url = _config.AuthorBlog,
+                Url          = _config.AuthorBlog,
             };
 
             if (item.Damage.Length > 0)
             {
                 const decimal DAMAGE_INC = 0.02m;
-                decimal damageAt10 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 10m));
-                decimal damageAt20 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 20m));
-                decimal damageAt30 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 30m));
-                decimal damageAt40 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 40m));
-                decimal damageAt50 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 50m));
+                decimal damageAt10 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 10m);
+                decimal damageAt20 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 20m);
+                decimal damageAt30 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 30m);
+                decimal damageAt40 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 40m);
+                decimal damageAt50 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 50m);
 
                 embed.AddField("__**Damage**__", $@"
                     **multiplier** `{item.Damage}`
