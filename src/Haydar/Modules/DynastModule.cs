@@ -37,7 +37,6 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
-
         [Command("find"), Summary("To find a specific player in toplist")]
         public async Task FindPlayers(string player)
         {
@@ -87,7 +86,6 @@ namespace Haydar.Modules
             var result = Tabularize(servers);
             await ReplyAsync(result);
         }
-
 
         [Command("item"), Summary("To check properties of choosen item")]
         public async Task GetItemInformations(string name)
