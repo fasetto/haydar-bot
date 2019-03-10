@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Haydar.Models;
+using System.IO;
 
 [assembly: InternalsVisibleTo("Haydar.Tests"), InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
@@ -14,10 +15,16 @@ namespace Haydar.Api
     public class DynastApi
     {
         private readonly Config _config;
+        public List<Item> Items { get; private set; }
 
         public DynastApi(Config config)
         {
             _config = config;
+            var dir = Directory.GetCurrentDirectory();
+
+            var data = File.ReadAllText(Directory.GetCurrentDirectory() + "/items.json");
+            Items = JsonConvert.DeserializeObject<List<Item>>(data);
+
         }
 
         public async Task<List<ServerInfo>> FetchToplistAsync(string region = null)
