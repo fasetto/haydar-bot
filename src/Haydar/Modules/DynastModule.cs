@@ -12,6 +12,7 @@ using Haydar.Services;
 
 namespace Haydar.Modules
 {
+    [Name("Dynast Module")]
     public class DynastModule : ModuleBase<SocketCommandContext>
     {
         private readonly DynastApi _api;
@@ -120,7 +121,7 @@ namespace Haydar.Modules
                 decimal damageAt40 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 40m);
                 decimal damageAt50 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 50m);
 
-                embed.AddField("__**Damage**__", $@"
+                var damageInfos = $@"
                     **multiplier** `{item.Damage}`
                     **dps** `{item.Dps?.ToString("0.00")}`
                     **level10** `{damageAt10.ToString("0.00")}`
@@ -128,13 +129,27 @@ namespace Haydar.Modules
                     **level30** `{damageAt30.ToString("0.00")}`
                     **level40** `{damageAt40.ToString("0.00")}`
                     **level50** `{damageAt50.ToString("0.00")}`
-                ", true);
+                ";
 
-                embed.AddField("__**Other Informations**__", $@"
+                embed.AddField(f =>
+                {
+                    f.Name = "__**Damage**__";
+                    f.Value = damageInfos;
+                    f.IsInline = true;
+                });
+
+                var otherInfos = $@"
                     **durability** `{item.Durability}`
                     **attack angle** `{item.AttackAngle}`
                     **attack distance** `{item.Distance}`
-                ", true);
+                ";
+
+                embed.AddField(f =>
+                {
+                    f.Name = "__**Other Informations**__";
+                    f.Value = otherInfos;
+                    f.IsInline = true;
+                });
             }
 
             embed.WithFooter(footer => footer.Text = "If you didn't find the item you are looking for, just use the itemlist command to see the all items in the game..");
@@ -177,8 +192,8 @@ namespace Haydar.Modules
                     catch (ArgumentOutOfRangeException) { break; }
                 }
 
-                fields[0] = fields[0].WithValue(leftCol);
-                fields[1] = fields[1].WithValue(rightCol);
+                fields[0].Value = leftCol;
+                fields[1].Value = rightCol;
 
                 pages.Add(new Page() { Fields = fields });
                 counter += 6;
