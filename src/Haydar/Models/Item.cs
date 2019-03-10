@@ -23,10 +23,10 @@ namespace Haydar.Models
         public string AttackAngle { get; set; }
 
         [JsonProperty("durability")]
-        public int Durability { get; set; }
+        public int? Durability { get; set; }
 
         [JsonProperty("dps")]
-        public float Dps { get; set; }
+        public float? Dps { get; set; }
 
     }
 }
