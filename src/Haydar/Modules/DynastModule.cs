@@ -180,7 +180,7 @@ namespace Haydar.Modules
                 counter += 6;
             }
 
-            var msg = new PaginatedMessage(pages, "Item List", _config.AuthorBlog, new Color(0x01D484), Context.User);
+            var msg = new PaginatedMessage(pages, ":closed_book: Item List", _config.AuthorBlog, new Color(0x01D484), Context.User);
             await _paginator.SendPaginatedMessageAsync(Context.Channel, msg);
         }
 
