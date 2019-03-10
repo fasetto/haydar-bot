@@ -55,6 +55,7 @@ namespace Haydar
                 .AddSingleton(_client)
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandlingService>()
+                .AddPaginator(_client)
                 // Logging
                 // .AddLogging(x => x.AddConsole())
                 .AddSingleton<LogService>()
