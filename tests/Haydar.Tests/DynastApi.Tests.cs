@@ -112,5 +112,15 @@ namespace Haydar.Tests
             var servers = await api.FindAllServersAsync(label);
             servers.ForEach(x => Assert.Equal(expected, x.Label.Split('-')[0]));
         }
+
+        [Fact]
+        public void Items_LoadedCorrectly()
+        {
+            var items = api.Items;
+            var pan = items.Where(x => x.Name == "frying pane").FirstOrDefault();
+
+            Assert.Equal(59, items.Count);
+            Assert.NotNull(pan);
+        }
     }
 }
