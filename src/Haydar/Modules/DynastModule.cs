@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using ConsoleTableExt;
+using Discord;
 using Discord.Commands;
 using Haydar.Api;
 using Haydar.Models;
@@ -60,6 +63,54 @@ namespace Haydar.Modules
             var servers = await _api.DeadServersAsync(region);
             var result = Tabularize(servers);
             await ReplyAsync(result);
+        }
+
+
+        [Command("item"), Summary("To check properties of choosen item")]
+        public async Task GetItemInformations(string name)
+        {
+            var item = _api.Items.Where(i => i.Name.ToLower()
+                .Contains(name.ToLower()))
+                .FirstOrDefault();
+
+            var embed = new EmbedBuilder()
+            {
+                Title = $":bulb: {item.Name}",
+                Description = item.Description,
+                Color = new Color(0xDDB979),
+                ThumbnailUrl = item.Image,
+                Url = _config.AuthorBlog,
+            };
+
+            if (item.Damage.Length > 0)
+            {
+                const decimal DAMAGE_INC = 0.02m;
+                decimal damageAt10 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 10m));
+                decimal damageAt20 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 20m));
+                decimal damageAt30 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 30m));
+                decimal damageAt40 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 40m));
+                decimal damageAt50 = decimal.Parse(item.Damage) * Convert.ToDecimal((1.0m + DAMAGE_INC * 50m));
+
+                embed.AddField("__**Damage**__", $@"
+                    **multiplier** `{item.Damage}`
+                    **dps** `{item.Dps}`
+                    **level10** `{damageAt10}`
+                    **level20** `{damageAt20}`
+                    **level30** `{damageAt30}`
+                    **level40** `{damageAt40}`
+                    **level50** `{damageAt50}`
+                ", true);
+
+                embed.AddField("__**Other Informations**__", $@"
+                    **durability** `{item.Durability}`
+                    **attack angle** `{item.AttackAngle}`
+                    **attack distance** `{item.Distance}`
+                ", true);
+            }
+
+            embed.WithFooter(footer => footer.Text = "If you didn\'t find the item you are looking for, just use the itemlist command to see the all items in the game..");
+
+            await ReplyAsync(embed: embed.Build());
         }
 
         private string Tabularize(List<ServerInfo> serverList)
