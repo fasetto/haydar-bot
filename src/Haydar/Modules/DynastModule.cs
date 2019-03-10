@@ -8,6 +8,7 @@ using Discord;
 using Discord.Commands;
 using Haydar.Api;
 using Haydar.Models;
+using Haydar.Services;
 
 namespace Haydar.Modules
 {
@@ -15,11 +16,13 @@ namespace Haydar.Modules
     {
         private readonly DynastApi _api;
         private readonly Config _config;
+        private readonly PaginationService _paginator;
 
-        public DynastModule(DynastApi api, Config config)
+        public DynastModule(DynastApi api, Config config, PaginationService paginator)
         {
             _api = api;
             _config = config;
+            _paginator = paginator;
         }
 
         [Command("toplist"), Summary("Prints top10 players based on their score")]
@@ -133,6 +136,52 @@ namespace Haydar.Modules
 
             embed.WithFooter(footer => footer.Text = "If you didn't find the item you are looking for, just use the itemlist command to see the all items in the game..");
             await ReplyAsync(embed: embed.Build());
+        }
+
+        [Command("itemlist")]
+        [RequireBotPermission(ChannelPermission.ManageMessages | ChannelPermission.AddReactions)]
+        public async Task ItemList()
+        {
+            var items = _api.Items;
+            var pageCount = int.Parse(Math.Ceiling(items.Count / 12m).ToString());
+            var pages = new List<Page>();
+
+            int counter = 0;
+            for (int i = 0; i < pageCount; i++)
+            {
+                var fields = new List<EmbedFieldBuilder>()
+                {
+                    new EmbedFieldBuilder()
+                    .WithName(":pushpin:")
+                    .WithIsInline(true),
+
+                    new EmbedFieldBuilder()
+                    .WithName(":pushpin:")
+                    .WithIsInline(true),
+                };
+
+                string leftCol = "", rightCol = "";
+
+                for (int j = 0; j < 6; j++)
+                {
+                    try
+                    {
+                        leftCol += $"{items[counter].Name}\n";
+                        rightCol += $"{items[counter + 6].Name}\n";
+                        counter++;
+                    }
+                    catch (ArgumentOutOfRangeException) { break; }
+                }
+
+                fields[0] = fields[0].WithValue(leftCol);
+                fields[1] = fields[1].WithValue(rightCol);
+
+                pages.Add(new Page() { Fields = fields });
+                counter += 6;
+            }
+
+            var msg = new PaginatedMessage(pages, "Item List", _config.AuthorBlog, new Color(0x01D484), Context.User);
+            await _paginator.SendPaginatedMessageAsync(Context.Channel, msg);
         }
 
         private string Tabularize(List<ServerInfo> serverList)
