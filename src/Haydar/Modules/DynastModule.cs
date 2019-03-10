@@ -26,6 +26,10 @@ namespace Haydar.Modules
         public async Task TopList(string region = null)
         {
             var toplist = await _api.FetchToplistAsync(region);
+
+            if (toplist is null || toplist.Count == 0)
+                throw new NullReferenceException("Can't fetch the toplist.");
+
             var result = Tabularize(toplist);
             await ReplyAsync(result);
         }
@@ -35,6 +39,10 @@ namespace Haydar.Modules
         public async Task FindPlayers(string player)
         {
             var players = await _api.FindPlayersAsync(player);
+
+            if (players is null || players.Count() == 0)
+                throw new NullReferenceException("Can't find that player.");
+
             var result = Tabularize(players);
             await ReplyAsync(result);
         }
@@ -47,12 +55,20 @@ namespace Haydar.Modules
             if (identifider == null)
             {
                 var servers = await _api.FindAllServersAsync(label);
+
+                if (servers is null || servers.Count() == 0)
+                    throw new NullReferenceException("Can't find that server.");
+
                 result = Tabularize(servers);
                 await ReplyAsync(result);
                 return;
             }
 
             var server = await _api.FindServerAsync(label, identifider);
+
+            if (server is null)
+                throw new NullReferenceException("Can't find that server.");
+
             result = Tabularize(new List<ServerInfo>() { server });
             await ReplyAsync(result);
         }
@@ -61,6 +77,10 @@ namespace Haydar.Modules
         public async Task DeadServers(string region = null)
         {
             var servers = await _api.DeadServersAsync(region);
+
+            if (servers is null || servers.Count() == 0)
+                throw new NullReferenceException("Can't find that server.");
+
             var result = Tabularize(servers);
             await ReplyAsync(result);
         }
@@ -72,6 +92,9 @@ namespace Haydar.Modules
             var item = _api.Items.Where(i => i.Name.ToLower()
                 .Contains(name.ToLower()))
                 .FirstOrDefault();
+
+            if (item is null)
+                throw new NullReferenceException("Can't find that item.");
 
             var embed = new EmbedBuilder()
             {
@@ -108,7 +131,7 @@ namespace Haydar.Modules
                 ", true);
             }
 
-            embed.WithFooter(footer => footer.Text = "If you didn\'t find the item you are looking for, just use the itemlist command to see the all items in the game..");
+            embed.WithFooter(footer => footer.Text = "If you didn't find the item you are looking for, just use the itemlist command to see the all items in the game..");
             await ReplyAsync(embed: embed.Build());
         }
 

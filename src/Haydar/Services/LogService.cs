@@ -33,7 +33,7 @@ namespace Haydar.Services
             // Return an error message for async commands
             if (message.Exception is CommandException command)
                 // Don't risk blocking the logging task by awaiting a message send; ratelimits!?
-                command.Context.Channel.SendMessageAsync($"Error: {command.Message}");
+                command.Context.Channel.SendMessageAsync($":expressionless: {command.InnerException.Message}");
 
             System.Console.WriteLine(message.ToString());
             return Task.CompletedTask;
