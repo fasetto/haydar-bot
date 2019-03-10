@@ -99,8 +99,5 @@ namespace Haydar.Api
             var servers = await FetchServerInformationsAsync(x => x.Label.Split('-')[0].ToLower().Contains(label.ToLower()));
             return servers.OrderByDescending(x => x.TopPlayerScore).Take(10).ToList();
         }
-
-        //TODO: Add Item command
-        //TODO: Add ItemList command
     }
 }
