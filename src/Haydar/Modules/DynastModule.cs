@@ -40,7 +40,7 @@ namespace Haydar.Modules
 
         [Command("find")]
         [Summary("To find a specific player in toplist")]
-        public async Task FindPlayers(string player)
+        public async Task FindPlayers([Remainder] string player)
         {
             var players = await _api.FindPlayersAsync(player);
 
@@ -93,7 +93,7 @@ namespace Haydar.Modules
 
         [Command("item")]
         [Summary("To check properties of choosen item")]
-        public async Task GetItemInformations(string name)
+        public async Task GetItemInformations([Remainder] string name)
         {
             var item = _api.Items.Where(i => i.Name.ToLower()
                 .Contains(name.ToLower()))
