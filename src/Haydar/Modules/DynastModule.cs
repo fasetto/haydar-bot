@@ -25,7 +25,8 @@ namespace Haydar.Modules
             _paginator = paginator;
         }
 
-        [Command("toplist"), Summary("Prints top10 players based on their score")]
+        [Command("toplist")]
+        [Summary("Prints top10 players based on their score")]
         public async Task TopList(string region = null)
         {
             var toplist = await _api.FetchToplistAsync(region);
@@ -37,7 +38,8 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
-        [Command("find"), Summary("To find a specific player in toplist")]
+        [Command("find")]
+        [Summary("To find a specific player in toplist")]
         public async Task FindPlayers(string player)
         {
             var players = await _api.FindPlayersAsync(player);
@@ -49,7 +51,8 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
-        [Command("server"), Summary("Prints informations about selected server")]
+        [Command("server")]
+        [Summary("Prints informations about selected server")]
         public async Task FindServers(string label, string identifider = null)
         {
             string result;
@@ -75,7 +78,8 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
-        [Command("dead"), Summary("Prints servers with less player count")]
+        [Command("dead")]
+        [Summary("Prints servers with less player count")]
         public async Task DeadServers(string region = null)
         {
             var servers = await _api.DeadServersAsync(region);
@@ -87,7 +91,8 @@ namespace Haydar.Modules
             await ReplyAsync(result);
         }
 
-        [Command("item"), Summary("To check properties of choosen item")]
+        [Command("item")]
+        [Summary("To check properties of choosen item")]
         public async Task GetItemInformations(string name)
         {
             var item = _api.Items.Where(i => i.Name.ToLower()
@@ -137,6 +142,7 @@ namespace Haydar.Modules
         }
 
         [Command("itemlist")]
+        [Summary("Prints the item list currently in game.")]
         [RequireBotPermission(ChannelPermission.ManageMessages | ChannelPermission.AddReactions)]
         public async Task ItemList()
         {
