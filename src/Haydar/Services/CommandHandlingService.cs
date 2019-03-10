@@ -48,13 +48,7 @@ namespace Haydar.Services
             if (!message.HasStringPrefix(_config.BotConfig.Prefix, ref argPos)) return;
 
             var context = new SocketCommandContext(_discord, message);
-            var result = await _commands.ExecuteAsync(context, argPos, _provider);
-
-            if (result.Error.HasValue &&
-                (result.Error.Value == CommandError.BadArgCount || result.Error.Value == CommandError.UnknownCommand))
-                return;
-
-            await context.Channel.SendMessageAsync(result.Error.ToString());
+            await _commands.ExecuteAsync(context, argPos, _provider);
         }
 
 
