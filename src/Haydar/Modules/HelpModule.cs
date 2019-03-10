@@ -7,6 +7,7 @@ using Haydar.Models;
 
 namespace Haydar.Modules
 {
+    [Name("Help Module")]
     public class HelpModule: ModuleBase<SocketCommandContext>
     {
         private readonly CommandService _service;
