@@ -227,6 +227,7 @@ namespace Haydar.Modules
 
         //TODO: Add Invite command
         //TODO: Add Contributors command
+        //TODO: Add Market/Trade system
 
     }
 }
