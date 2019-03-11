@@ -61,7 +61,7 @@ namespace Haydar
                 .AddSingleton<LogService>()
                 // Extra
                 .AddSingleton(_config)
-                .AddSingleton(new LiteDatabase("haydar.db"))
+                .AddSingleton(new LiteRepository("haydar.db"))
                 .AddSingleton<DynastApi>()
                 // Add additional services here...
                 .BuildServiceProvider();
