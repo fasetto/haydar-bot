@@ -225,5 +225,9 @@ namespace Haydar.Modules
             return result;
         }
 
+        //TODO: Add Help command
+        //TODO: Add Invite command
+        //TODO: Add Contributors command
+
     }
 }
