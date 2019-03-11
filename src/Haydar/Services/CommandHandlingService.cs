@@ -16,14 +16,12 @@ namespace Haydar.Services
         private readonly CommandService _commands;
         private readonly Config _config;
         private IServiceProvider _provider;
-        private LiteDatabase _database;
 
-        public CommandHandlingService(IServiceProvider provider, DiscordSocketClient discord, CommandService commands, LiteDatabase database, Config config)
+        public CommandHandlingService(IServiceProvider provider, DiscordSocketClient discord, CommandService commands, Config config)
         {
             _discord = discord;
             _commands = commands;
             _provider = provider;
-            _database = database;
             _config = config;
 
             _discord.MessageReceived += MessageReceived;
