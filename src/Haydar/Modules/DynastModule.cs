@@ -121,15 +121,14 @@ namespace Haydar.Modules
                 decimal damageAt40 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 40m);
                 decimal damageAt50 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 50m);
 
-                var damageInfos = $@"
-                    **multiplier** `{item.Damage}`
-                    **dps** `{item.Dps?.ToString("0.00")}`
-                    **level10** `{damageAt10.ToString("0.00")}`
-                    **level20** `{damageAt20.ToString("0.00")}`
-                    **level30** `{damageAt30.ToString("0.00")}`
-                    **level40** `{damageAt40.ToString("0.00")}`
-                    **level50** `{damageAt50.ToString("0.00")}`
-                ";
+                var damageInfos  = "";
+                    damageInfos += $"**multiplier** `{item.Damage}`\n";
+                    damageInfos += $"**dps** `{item.Dps?.ToString("0.00")}`\n";
+                    damageInfos += $"**level10** `{damageAt10.ToString("0.00")}`\n";
+                    damageInfos += $"**level20** `{damageAt20.ToString("0.00")}`\n";
+                    damageInfos += $"**level30** `{damageAt30.ToString("0.00")}`\n";
+                    damageInfos += $"**level40** `{damageAt40.ToString("0.00")}`\n";
+                    damageInfos += $"**level50** `{damageAt50.ToString("0.00")}`";
 
                 embed.AddField(f =>
                 {
@@ -138,11 +137,10 @@ namespace Haydar.Modules
                     f.IsInline = true;
                 });
 
-                var otherInfos = $@"
-                    **durability** `{item.Durability}`
-                    **attack angle** `{item.AttackAngle}`
-                    **attack distance** `{item.Distance}`
-                ";
+                var otherInfos  = "";
+                    otherInfos += $"**durability** `{item.Durability}`\n";
+                    otherInfos += $"**attack angle** `{item.AttackAngle}`\n";
+                    otherInfos += $"**attack distance** `{item.Distance}`\n";
 
                 embed.AddField(f =>
                 {
@@ -171,12 +169,15 @@ namespace Haydar.Modules
                 var fields = new List<EmbedFieldBuilder>()
                 {
                     new EmbedFieldBuilder()
-                    .WithName(":pushpin:")
-                    .WithIsInline(true),
-
+                    {
+                        Name = ":pushpin:",
+                        IsInline = true
+                    },
                     new EmbedFieldBuilder()
-                    .WithName(":pushpin:")
-                    .WithIsInline(true),
+                    {
+                        Name = ":pushpin:",
+                        IsInline = true
+                    },
                 };
 
                 string leftCol = "", rightCol = "";
