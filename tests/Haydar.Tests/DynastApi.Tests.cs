@@ -20,19 +20,19 @@ namespace Haydar.Tests
 
         public DynastApiTests()
         {
-            // var config = new Config()
-            // {
-            //     ApiUrl = "http://announcement-mirror.dynast.io/"
-            // };
+            var config = new Config()
+            {
+                ApiUrl = "http://announcement-mirror.dynast.io/"
+            };
 
-            // var data = File.ReadAllText("../../../sample_data.json");
-            // var sampleData = JsonConvert.DeserializeObject<ServerObj>(data).ServerInformations;
+            var data = File.ReadAllText("../../../sample_data.json");
+            var sampleData = JsonConvert.DeserializeObject<ServerObj>(data).ServerInformations;
 
-            // mock = new Mock<DynastApi>(config);
-            // mock.Setup(x => x.DeserializeServerInformations(It.IsAny<string>()))
-            //     .Returns(sampleData);
+            mock = new Mock<DynastApi>(config, new LiteRepository("haydar.db"));
+            mock.Setup(x => x.DeserializeServerInformations(It.IsAny<string>()))
+                .Returns(sampleData);
 
-            // api = mock.Object;
+            api = mock.Object;
         }
 
         [Fact]
@@ -118,9 +118,9 @@ namespace Haydar.Tests
         public async void Items_LoadedCorrectly()
         {
             var items = await api.GetItemList();
-            var pan = items.Where(x => x.Name == "frying pane").FirstOrDefault();
+            var pan = items.Where(x => x.Name == "fryingpane").FirstOrDefault();
 
-            Assert.Equal(59, items.Count());
+            Assert.Equal(58, items.Count());
             Assert.NotNull(pan);
         }
     }
