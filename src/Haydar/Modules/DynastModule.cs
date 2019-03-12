@@ -170,7 +170,7 @@ namespace Haydar.Modules
 
         [Command("invite")]
         [Summary("Prints the invite code of bot.")]
-        public async Task Invite(string beta = null)
+        public async Task Invite()
         {
             var invite = "https://kutt.it/haydar";
             await ReplyAsync(invite);
