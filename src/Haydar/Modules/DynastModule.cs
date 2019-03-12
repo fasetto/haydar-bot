@@ -96,9 +96,7 @@ namespace Haydar.Modules
         [Summary("To check properties of choosen item")]
         public async Task GetItemInformations([Remainder] string name)
         {
-            var item = _api.Items.Where(i => i.Name.ToLower()
-                .Contains(name.ToLower()))
-                .FirstOrDefault();
+            var item = await _api.GetItem(name);
 
             if (item is null)
                 throw new NullReferenceException("Can't find that item.");
@@ -112,43 +110,8 @@ namespace Haydar.Modules
                 Url          = _config.AuthorBlog,
             };
 
-            if (item.Damage.Length > 0)
-            {
-                const decimal DAMAGE_INC = 0.02m;
-                decimal damageAt10 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 10m);
-                decimal damageAt20 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 20m);
-                decimal damageAt30 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 30m);
-                decimal damageAt40 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 40m);
-                decimal damageAt50 = decimal.Parse(item.Damage) * Convert.ToDecimal(1.0m + DAMAGE_INC * 50m);
-
-                var damageInfos  = "";
-                    damageInfos += $"**multiplier** `{item.Damage}`\n";
-                    damageInfos += $"**dps** `{item.Dps?.ToString("0.00")}`\n";
-                    damageInfos += $"**level10** `{damageAt10.ToString("0.00")}`\n";
-                    damageInfos += $"**level20** `{damageAt20.ToString("0.00")}`\n";
-                    damageInfos += $"**level30** `{damageAt30.ToString("0.00")}`\n";
-                    damageInfos += $"**level40** `{damageAt40.ToString("0.00")}`\n";
-                    damageInfos += $"**level50** `{damageAt50.ToString("0.00")}`";
-
-                embed.AddField(f =>
-                {
-                    f.Name = "__**Damage**__";
-                    f.Value = damageInfos;
-                    f.IsInline = true;
-                });
-
-                var otherInfos  = "";
-                    otherInfos += $"**durability** `{item.Durability}`\n";
-                    otherInfos += $"**attack angle** `{item.AttackAngle}`\n";
-                    otherInfos += $"**attack distance** `{item.Distance}`\n";
-
-                embed.AddField(f =>
-                {
-                    f.Name = "__**Other Informations**__";
-                    f.Value = otherInfos;
-                    f.IsInline = true;
-                });
-            }
+            if (item.GetType() == typeof(Weapon))
+                IncludeWeaponStats((Weapon) item, embed);
 
             embed.WithFooter(footer => footer.Text = "If you didn't find the item you are looking for, just use the itemlist command to see the all items in the game..");
             await ReplyAsync(embed: embed.Build());
@@ -159,7 +122,7 @@ namespace Haydar.Modules
         [RequireBotPermission(ChannelPermission.ManageMessages | ChannelPermission.AddReactions)]
         public async Task ItemList()
         {
-            var items = _api.Items;
+            var items = await _api.GetItemList();
             var pageCount = int.Parse(Math.Ceiling(items.Count / 12m).ToString());
             var pages = new List<Page>();
 
@@ -224,6 +187,44 @@ namespace Haydar.Modules
 
             result += "```";
             return result;
+        }
+
+        private void IncludeWeaponStats(Weapon weapon, EmbedBuilder embed)
+        {
+            const float DAMAGE_INC = 0.02f;
+            float damageAt10 = weapon.Damage * 1.0f + DAMAGE_INC * 10f;
+            float damageAt20 = weapon.Damage * 1.0f + DAMAGE_INC * 20f;
+            float damageAt30 = weapon.Damage * 1.0f + DAMAGE_INC * 30f;
+            float damageAt40 = weapon.Damage * 1.0f + DAMAGE_INC * 40f;
+            float damageAt50 = weapon.Damage * 1.0f + DAMAGE_INC * 50f;
+
+            var damageInfos  = "";
+                damageInfos += $"**multiplier** `{weapon.Damage}`\n";
+                damageInfos += $"**dps** `{weapon.Dps.ToString("0.00")}`\n";
+                damageInfos += $"**level10** `{damageAt10.ToString("0.00")}`\n";
+                damageInfos += $"**level20** `{damageAt20.ToString("0.00")}`\n";
+                damageInfos += $"**level30** `{damageAt30.ToString("0.00")}`\n";
+                damageInfos += $"**level40** `{damageAt40.ToString("0.00")}`\n";
+                damageInfos += $"**level50** `{damageAt50.ToString("0.00")}`";
+
+            embed.AddField(f =>
+            {
+                f.Name     = "__**Damage**__";
+                f.Value    = damageInfos;
+                f.IsInline = true;
+            });
+
+            var otherInfos  = "";
+                otherInfos += $"**durability** `{weapon.Durability}`\n";
+                otherInfos += $"**attack angle** `{weapon.AttackAngle}`\n";
+                otherInfos += $"**attack distance** `{weapon.Distance}`";
+
+            embed.AddField(f =>
+            {
+                f.Name     = "__**Other Informations**__";
+                f.Value    = otherInfos;
+                f.IsInline = true;
+            });
         }
 
         //TODO: Add Invite command

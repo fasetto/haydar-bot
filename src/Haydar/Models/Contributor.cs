@@ -1,10 +1,10 @@
-
 using System;
+using System.Collections.Generic;
 using LiteDB;
 
 namespace Haydar.Models
 {
-    public class Item
+    public class Contributor
     {
         [BsonId]
         public Guid Id { get; set; }
@@ -12,10 +12,7 @@ namespace Haydar.Models
         [BsonField("name")]
         public string Name { get; set; }
 
-        [BsonField("image")]
-        public string Image { get; set; }
-
-        [BsonField("description")]
-        public string Description { get; set; }
+        [BsonField("name")]
+        public List<string> Descriptions { get; set; }
     }
 }

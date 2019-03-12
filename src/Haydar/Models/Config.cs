@@ -45,13 +45,4 @@ namespace Haydar.Models
         public string InviteUrlBeta { get; set; }
 
     }
-
-    public class Contributor
-    {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("descriptions")]
-        public List<string> Descriptions { get; set; }
-    }
 }

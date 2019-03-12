@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Haydar.Models;
 using System.IO;
+using LiteDB;
 
 [assembly: InternalsVisibleTo("Haydar.Tests"), InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
@@ -15,16 +16,12 @@ namespace Haydar.Api
     public class DynastApi
     {
         private readonly Config _config;
-        public List<Item> Items { get; private set; }
+        private readonly LiteRepository _repository;
 
-        public DynastApi(Config config)
+        public DynastApi(Config config, LiteRepository repository)
         {
             _config = config;
-            var dir = Directory.GetCurrentDirectory();
-
-            var data = File.ReadAllText(Directory.GetCurrentDirectory() + "/items.json");
-            Items = JsonConvert.DeserializeObject<List<Item>>(data);
-
+            _repository = repository;
         }
 
         public async Task<List<ServerInfo>> FetchToplistAsync(string region = null)
@@ -107,6 +104,34 @@ namespace Haydar.Api
         {
             var servers = await FetchServerInformationsAsync(x => x.Label.Split('-')[0].ToLower().Contains(label.ToLower()));
             return servers.OrderByDescending(x => x.TopPlayerScore).Take(10).ToList();
+        }
+
+        public async Task<List<Item>> GetItemList()
+        {
+            var items   = new List<Item>();
+            var weapons = _repository.Query<Weapon>().ToList();
+            var hats    = _repository.Query<Hat>().ToList();
+
+            items.AddRange(weapons);
+            items.AddRange(hats);
+
+            return await Task.FromResult(items);
+        }
+
+        public Task<Item> GetItem(string name)
+        {
+            var weapon = _repository.Query<Weapon>()
+                .Where(x => x.Name.ToLower().Contains(name.ToLower()))
+                .FirstOrDefault();
+
+            if (weapon != null)
+                return Task.FromResult<Item>(weapon);
+
+            var hat = _repository.Query<Hat>()
+                .Where(x => x.Name.ToLower().Contains(name.ToLower()))
+                .FirstOrDefault();
+
+            return Task.FromResult<Item>(hat);
         }
     }
 }
