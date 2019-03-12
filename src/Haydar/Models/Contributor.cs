@@ -12,7 +12,7 @@ namespace Haydar.Models
         [BsonField("name")]
         public string Name { get; set; }
 
-        [BsonField("name")]
-        public List<string> Descriptions { get; set; }
+        [BsonField("description")]
+        public string Description { get; set; }
     }
 }
