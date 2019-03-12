@@ -90,7 +90,16 @@ namespace Haydar.Api
         {
             identifier = identifier[0] == '0' ? identifier : identifier.Insert(0, "0");
 
-            var servers = await FetchServerInformationsAsync(x => x.Label.Split('-')[0].ToLower().Contains(label.ToLower()) && x.Label.Split('-')[1] == identifier.ToLower());
+            var servers = await FetchServerInformationsAsync(x =>
+            {
+                var values = x.Label.Split('-');
+
+                if (values.Length > 1)
+                    return x.Label.Split('-')[0].ToLower().Contains(label.ToLower()) && x.Label.Split('-')[1] == identifier.ToLower();
+
+                return false;
+            });
+
             return servers.FirstOrDefault();
         }
 
