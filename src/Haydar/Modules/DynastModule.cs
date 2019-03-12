@@ -9,6 +9,7 @@ using Discord.Commands;
 using Haydar.Api;
 using Haydar.Models;
 using Haydar.Services;
+using LiteDB;
 
 namespace Haydar.Modules
 {
@@ -18,6 +19,7 @@ namespace Haydar.Modules
         private readonly DynastApi _api;
         private readonly Config _config;
         private readonly PaginationService _paginator;
+        public LiteRepository Repository { get; set; }
 
         public DynastModule(DynastApi api, Config config, PaginationService paginator)
         {
@@ -174,6 +176,37 @@ namespace Haydar.Modules
         {
             var invite = "https://kutt.it/haydar";
             await ReplyAsync(invite);
+        }
+
+        [Command("contributors")]
+        public async Task Contributors()
+        {
+            var contributorList = Repository.Query<Contributor>()
+                .ToList();
+
+            string contributors = "";
+            foreach (var c in contributorList)
+            {
+                contributors += $"**{c.Name}**\n";
+                contributors += c.Description;
+
+                contributors += "\n\n";
+            }
+
+            var embed = new EmbedBuilder()
+            {
+                Color = new Color(0x01D484),
+                Description = "Contributors of this projet :heart:"
+            };
+
+            embed.AddField(f =>
+            {
+                f.Name = "Contributors";
+                f.Value = contributors;
+                f.IsInline = false;
+            });
+
+            await ReplyAsync(embed: embed.Build());
         }
 
         private string Tabularize(List<ServerInfo> serverList)
