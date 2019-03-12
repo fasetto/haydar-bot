@@ -20,6 +20,7 @@ coverage.hits
 coverage.json
 
 Heroku.md
+data/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
