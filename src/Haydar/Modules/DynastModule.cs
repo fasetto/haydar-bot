@@ -167,6 +167,15 @@ namespace Haydar.Modules
             await _paginator.SendPaginatedMessageAsync(Context.Channel, msg);
         }
 
+
+        [Command("invite")]
+        [Summary("Prints the invite code of bot.")]
+        public async Task Invite(string beta = null)
+        {
+            var invite = "https://kutt.it/haydar";
+            await ReplyAsync(invite);
+        }
+
         private string Tabularize(List<ServerInfo> serverList)
         {
             var scoreTable = new DataTable();
@@ -227,7 +236,6 @@ namespace Haydar.Modules
             });
         }
 
-        //TODO: Add Invite command
         //TODO: Add Contributors command
         //TODO: Add Market/Trade system
 
