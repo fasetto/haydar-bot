@@ -269,7 +269,6 @@ namespace Haydar.Modules
             });
         }
 
-        //TODO: Add Contributors command
         //TODO: Add Market/Trade system
 
     }
