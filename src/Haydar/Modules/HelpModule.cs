@@ -94,5 +94,24 @@ namespace Haydar.Modules
 
             await ReplyAsync("", embed: builder.Build());
         }
+
+        [Command("invite")]
+        [Summary("Prints the invite code of bot.")]
+        public async Task Invite()
+        {
+            var invite = "https://kutt.it/haydar";
+            await Context.User.SendMessageAsync(invite);
+            await ReplyAsync(":white_check_mark: Invite link sent via DM.");
+        }
+
+        [Command("invite beta")]
+        [Summary("Prints the invite code of bot.")]
+        [RequireOwner]
+        public async Task InviteBeta()
+        {
+            var invite = "https://kutt.it/haydar-beta";
+            await Context.User.SendMessageAsync(invite);
+            await ReplyAsync(":white_check_mark: Invite link sent via DM.");
+        }
     }
 }
