@@ -37,6 +37,7 @@ namespace Haydar
             else
                 await _client.LoginAsync(TokenType.Bot, _config.BotConfig.Token);
 
+            await _client.SetGameAsync(_config.BotConfig.GameStatus, type: ActivityType.Listening);
             await _client.StartAsync();
             await Task.Delay(-1);
         }
@@ -53,7 +54,10 @@ namespace Haydar
             return new ServiceCollection()
                 // Base
                 .AddSingleton(_client)
-                .AddSingleton<CommandService>()
+                .AddSingleton(new CommandService(new CommandServiceConfig()
+                {
+                    DefaultRunMode = RunMode.Async
+                }))
                 .AddSingleton<CommandHandlingService>()
                 .AddPaginator(_client)
                 // Logging
