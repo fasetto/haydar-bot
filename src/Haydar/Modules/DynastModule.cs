@@ -169,28 +169,20 @@ namespace Haydar.Modules
             await _paginator.SendPaginatedMessageAsync(Context.Channel, msg);
         }
 
-
-        [Command("invite")]
-        [Summary("Prints the invite code of bot.")]
-        public async Task Invite()
-        {
-            var invite = "https://kutt.it/haydar";
-            await ReplyAsync(invite);
-        }
-
         [Command("contributors")]
         public async Task Contributors()
         {
-            var contributorList = Repository.Query<Contributor>()
-                .ToList();
+            var contributorList = Repository.Query<Contributor>().ToList();
 
             string contributors = "";
             foreach (var c in contributorList)
             {
                 contributors += $"**{c.Name}**\n";
-                contributors += c.Description;
 
-                contributors += "\n\n";
+                foreach (var d in c.Descriptions)
+                    contributors += d + "\n";
+
+                contributors += "\n";
             }
 
             var embed = new EmbedBuilder()
