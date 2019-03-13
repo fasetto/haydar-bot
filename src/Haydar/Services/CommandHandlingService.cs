@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
@@ -14,15 +15,17 @@ namespace Haydar.Services
     {
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;
-        private readonly Config _config;
         private IServiceProvider _provider;
+        private readonly LiteRepository _repository;
+        private readonly Config _config;
 
-        public CommandHandlingService(IServiceProvider provider, DiscordSocketClient discord, CommandService commands, Config config)
+        public CommandHandlingService(IServiceProvider provider, DiscordSocketClient discord, CommandService commands, Config config, LiteRepository repository)
         {
             _discord = discord;
             _commands = commands;
             _provider = provider;
             _config = config;
+            _repository = repository;
 
             _discord.MessageReceived += MessageReceived;
         }
@@ -40,15 +43,23 @@ namespace Haydar.Services
             if (!(rawMessage is SocketUserMessage message)) return;
             if (message.Source != MessageSource.User) return;
 
+            var context = new SocketCommandContext(_discord, message);
+
+            var guild = _repository.Query<DiscordGuild>()
+                .Where(g => g.Id == context.Guild.Id)
+                .FirstOrDefault();
+
+            var prefix = _config.BotConfig.Prefix;
+
+            if (guild != null)
+                prefix = guild.Prefix;
+
             int argPos = 0;
             // if (!message.HasMentionPrefix(_discord.CurrentUser, ref argPos)) return;
-            // Uncomment below to enable a string prefix (these should only be used with private bots!)
-            if (!message.HasStringPrefix(_config.BotConfig.Prefix, ref argPos)) return;
+            if (!message.HasStringPrefix(prefix, ref argPos)) return;
 
-            var context = new SocketCommandContext(_discord, message);
             await _commands.ExecuteAsync(context, argPos, _provider);
         }
-
 
     }
 }
