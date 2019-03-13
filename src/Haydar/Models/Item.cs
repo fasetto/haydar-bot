@@ -8,14 +8,8 @@ namespace Haydar.Models
     {
         [BsonId]
         public Guid Id { get; set; }
-
-        [BsonField("name")]
         public string Name { get; set; }
-
-        [BsonField("image")]
         public string Image { get; set; }
-
-        [BsonField("description")]
         public string Description { get; set; }
     }
 }
