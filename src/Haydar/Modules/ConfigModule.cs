@@ -17,7 +17,7 @@ namespace Haydar.Modules
         }
 
         [Command("prefix")]
-        [Summary("Change to current prefix")]
+        [Summary("To Change current prefix")]
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task SetPrefix(string name)
         {
